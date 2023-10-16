@@ -8,9 +8,9 @@ elephant
 hello
 tiger
 hello
-horse" > input.txt
+horse" >> input.txt
 
-grep -v "hello" input.txt > temp.txt
+grep -v "hello" input.txt >> temp.txt
 
 mv temp.txt input.txt
 

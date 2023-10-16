@@ -28,8 +28,12 @@ is_prime() {
 
 read -p "Enter an integer: " num
 
-if is_prime "$num"; then
-    echo "$num is a prime number."
+if ((num < 0)); then
+    echo "Error: Please enter a non-negative integer."
 else
-    echo "$num is not a prime number."
+    if is_prime "$num"; then
+        echo "$num is a prime number."
+    else
+        echo "$num is not a prime number."
+    fi
 fi

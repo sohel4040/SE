@@ -1,21 +1,38 @@
 #!/bin/bash
 
-read -p "Enter marks for Math: " maths
-read -p "Enter marks for Science: " science
-read -p "Enter marks for English: " english
+switchCase() {
+    local marks=$1
+    if ((marks >= 70)); then
+        echo "Division 1"
+    elif ((marks >= 40)); then
+        echo "Division 2"
+    else
+        echo "Fail"
+    fi
+}
 
-total_marks=$(echo "$maths + $science + $english" | bc)
-average_marks=$(echo "scale=2; $total_marks / 3" | bc)
+read -p "Enter number of students: " numberOfStudents
 
-case $average_marks in
-    70.00* | 8[0-9].* | 9[0-9].* | 100.00*)
-        result="I-Division";;
-    60.00* | 7[0-9].*)
-        result="II-Division";;
-    50.00* | 6[0-9].*)
-        result="III-Division";;
-    *)
-        result="Fail";;
-esac
+for ((student = 1; student <= numberOfStudents; student++)); do
+    read -p "Enter the number of subjects for Student $student: " n
+    marks=()
 
-echo "Result: $result"
+    for ((i = 0; i < n; i++)); do
+        read -p "Enter subject $((i+1)) marks for Student $student: " element
+        if ((element < 0)); then
+            echo "Error: Subject marks cannot be negative."
+            exit 1
+        fi
+        marks+=("$element")
+    done
+
+    sum=0
+    for mark in "${marks[@]}"; do
+        sum=$((sum + mark))
+    done
+
+    avg=$((sum / n))
+
+    result=$(switchCase "$avg")
+    echo "Student $student: $result"
+done
